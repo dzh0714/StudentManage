@@ -1,24 +1,27 @@
 <template>
   <div>
-    <div ref="eachera" id="main" ></div>
+    <div ref="eachera" id="main"></div>
   </div>
 </template>
 <script>
+import { mapState, mapActions } from "vuex";
 export default {
-  props: {},
+  props: {
+    data:Object
+  },
   components: {},
   data() {
     return {
       option: {
         title: {
-          text: "未来一周气温变化",
-          subtext: "纯属虚构"
+          text:this.data.stu_name+'同学的日周考成绩统计图',
+          subtext: "仅供参考"
         },
         tooltip: {
           trigger: "axis"
         },
         legend: {
-          data: ["最高气温", "最低气温"]
+          data: ["技能", "理论"]
         },
         toolbox: {
           show: true,
@@ -35,7 +38,7 @@ export default {
         xAxis: {
           type: "category",
           boundaryGap: false,
-          data: ["周一", "周二", "周三", "周四", "周五", "周六", "周日"]
+          data: ["08-01", "08-02", "08-03", "08-04", "08-05", "08-06", "08-07",'08-08','08-09','08-10','08-11','08-12','08-13']
         },
         yAxis: {
           type: "value",
@@ -45,9 +48,9 @@ export default {
         },
         series: [
           {
-            name: "最高气温",
+            name: "最高成绩",
             type: "line",
-            data: [11, 11, 15, 13, 12, 13, 10],
+            data: [11, 11, 15, 13, 12, 13, 10,10,10,50,78,45,16,15,47],
             markPoint: {
               data: [
                 { type: "max", name: "最大值" },
@@ -59,9 +62,9 @@ export default {
             }
           },
           {
-            name: "最低气温",
+            name: "最低成绩",
             type: "line",
-            data: [1, -2, 2, 5, 3, 2, 0],
+            data: [11, 41, 24, 55, 58, 56, 10,50,30,57,78,58,85,5,58],
             markPoint: {
               data: [{ name: "周最低", value: -2, xAxis: 1, yAxis: -1.5 }]
             },
@@ -90,14 +93,25 @@ export default {
             }
           }
         ]
-      }
+      },
     };
   },
-  computed: {},
-  methods: {
-    // 基于准备好的dom，初始化echarts实例
+  computed: {
+    ...mapState({
+      CjLists: state => state.emphasis.CjLists,
+      names: state => state.emphasis.names,
+    })
   },
-  created() {},
+  methods: {
+    ...mapActions({
+      getCjLists: "emphasis/getCjLists",
+    }),
+  },
+  created() {
+    this.getCjLists({
+      cid:this.data
+    })
+  },
   mounted() {
     var myChart = echarts.init(this.$refs.eachera);
     myChart.setOption(this.option);

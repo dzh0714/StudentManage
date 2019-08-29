@@ -39,4 +39,10 @@ export default {
         color: #fff;
         font-size: 26px;
     }
+
+    @media screen and (max-width:768px) {
+        .header{
+    font-size: 20px;
+    }
+    }
 </style>
